@@ -95,7 +95,7 @@
 	}
 
 	resource "azurerm_lb_nat_pool" "demo02group" {
-		count                          = 3
+		count                          = 1
 		resource_group_name            = "${azurerm_resource_group.demo02group.name}"
 		name                           = "${var.dns_name}-ssh"
 		loadbalancer_id                = "${azurerm_lb.demo02group.id}"
@@ -132,6 +132,7 @@
 		location            = "${var.location}"
 		resource_group_name = "${azurerm_resource_group.demo02group.name}"
 		upgrade_policy_mode = "Manual"
+		tags   			    = "${var.tags}"
 
 		sku {
 			name     = "Standard_B1ms"
@@ -166,13 +167,6 @@
 			admin_password       = "${var.admin_password}"
 			#custom_data          = "${file("web.conf")}"
 		}
-		os_profile_linux_config {
-			disable_password_authentication = true
-			ssh_keys {
-				path     = "/home/serg/.ssh/authorized_keys"
-				key_data = "${file("~/.ssh/id_rsa.pub")}"
-			}
-		}
 
 		network_profile {
 			name    = "${var.dns_name}-terraform-netw-profile"
@@ -186,7 +180,37 @@
 				load_balancer_inbound_nat_rules_ids    = ["${element(azurerm_lb_nat_pool.demo02group.*.id, count.index)}"]
 			}
 		}
-		tags    = "${var.tags}"
+
+		os_profile_linux_config {
+			disable_password_authentication = true
+			ssh_keys {
+				path     = "/home/serg/.ssh/authorized_keys"
+				key_data = "${file("~/.ssh/id_rsa.pub")}"
+			}
+		}
+		/*
+		connection {
+	        #host 		= "${azurerm_public_ip.demo02group.fqdn}"
+	        #host 		= "${element(azurerm_lb_nat_pool.demo02group.*.id, count.index)}"
+	        #host 		= "40.121.69.188"
+	        #host 		= "${azurerm_public_ip.demo02group.ip_address}"
+	        host 		= "${azurerm_public_ip.demo02group.ip_address}"
+
+	        user 		= "${var.admin_user}"
+	        type 		= "ssh"
+	        private_key = "${file("~/.ssh/id_rsa")}"
+	        timeout 	= "1m"
+	        agent 		= true
+    	}
+    	
+    	provisioner "remote-exec" {
+	        inline = [
+	          "sudo yum update -y && yum install -y docker nano wget git",
+	          "sudo systemctl enable docker && systemctl start docker",
+	          "sudo docker pull skostiuk/apache-php:5.0",
+	          "sudo docker run -d -p 8080:80 skostiuk/apache-php:5.0"
+	        ]
+	    } */
 	}
 
 	#-------------------Create Storage BLOB--------------------------------
@@ -255,5 +279,29 @@
 		start_ip_address    = "0.0.0.0"
 		end_ip_address      = "255.255.255.254"
 	}
+
+	#-------------------RUN SCRIPT--------------------------------
+
+	resource "azurerm_virtual_machine_extension" "helloterraformvm" {
+		name                 = "${var.dns_name}-hostname"
+		location             = "${var.location}"
+		#resource_group_name  = "${azurerm_resource_group.demo02group.name}"
+		resource_group_name  = "test-res-group-terraform"
+		virtual_machine_name = "myVM-test-nginx"
+		#virtual_machine_name = "${azurerm_virtual_machine_scale_set.demo02group.name}"
+		#publisher            = "Microsoft.OSTCExtensions"
+		#type                 = "CustomScriptForLinux"
+		publisher            = "Microsoft.Azure.Extensions"
+		type                 = "CustomScript"
+		type_handler_version = "2.0"
+		#tags				 = "${var.tags}"
+
+		settings = <<SETTINGS
+			{
+				"commandToExecute": "yum update -y && yum install -y docker nano wget git"
+			}
+		SETTINGS
+	}
+
 
 
