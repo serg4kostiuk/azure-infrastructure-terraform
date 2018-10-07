@@ -126,6 +126,15 @@
 	}
 
 	#-------------------Create Scale set--------------------------------
+
+	data "azurerm_resource_group" "image" {
+		name = "res-group-for-images"
+	}
+
+	data "azurerm_image" "image" {
+		name                = "wordpress-image"
+		resource_group_name = "${data.azurerm_resource_group.image.name}"
+	}
 	resource "azurerm_virtual_machine_scale_set" "demo02group" {
 		name                = "demo02group"
 		location            = "${var.location}"
@@ -140,10 +149,7 @@
 		}
 
 		storage_profile_image_reference {
-			publisher = "OpenLogic"
-			offer     = "CentOS"
-			sku       = "7.0"
-			version   = "7.0.20150128"
+			id="${data.azurerm_image.image.id}"
 		}
 
 		storage_profile_os_disk {
