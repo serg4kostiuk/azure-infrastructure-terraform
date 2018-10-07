@@ -1,17 +1,17 @@
 	/*
 	variable "subscription_id" {
-		default = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+		default = "REPLACE-WITH-YOUR-SUBSCRIPTION-ID"
 	}
 
 	variable "client_id" {
-		default = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+		default = "REPLACE-WITH-YOUR-CLIENT-ID"
 	}
 
 	variable "client_secret" {
-		default = "xxxxxxxxxxxxxxxxx"
+		default = "REPLACE-WITH-YOUR-CLIENT-SECRET"
 	}
 
 	variable "tenant_id" {
-		default = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+		default = "REPLACE-WITH-YOUR-TENANT-ID"
 	}
 	*/

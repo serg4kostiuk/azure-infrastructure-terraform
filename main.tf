@@ -1,4 +1,3 @@
-
 	resource "random_string" "fqdn" {
 		length  = 5
 		special = false
@@ -132,7 +131,7 @@
 		location            = "${var.location}"
 		resource_group_name = "${azurerm_resource_group.demo02group.name}"
 		upgrade_policy_mode = "Manual"
-		tags   			    = "${var.tags}"
+		#tags   			    = "${var.tags}"
 
 		sku {
 			name     = "Standard_B1ms"
@@ -188,30 +187,49 @@
 				key_data = "${file("~/.ssh/id_rsa.pub")}"
 			}
 		}
-		/*
-		connection {
-	        #host 		= "${azurerm_public_ip.demo02group.fqdn}"
-	        #host 		= "${element(azurerm_lb_nat_pool.demo02group.*.id, count.index)}"
-	        #host 		= "40.121.69.188"
-	        #host 		= "${azurerm_public_ip.demo02group.ip_address}"
-	        host 		= "${azurerm_public_ip.demo02group.ip_address}"
-
-	        user 		= "${var.admin_user}"
-	        type 		= "ssh"
-	        private_key = "${file("~/.ssh/id_rsa")}"
-	        timeout 	= "1m"
-	        agent 		= true
-    	}
-    	
-    	provisioner "remote-exec" {
-	        inline = [
-	          "sudo yum update -y && yum install -y docker nano wget git",
-	          "sudo systemctl enable docker && systemctl start docker",
-	          "sudo docker pull skostiuk/apache-php:5.0",
-	          "sudo docker run -d -p 8080:80 skostiuk/apache-php:5.0"
-	        ]
-	    } */
 	}
+	/*		
+	provisioner "remote-exec" {
+		connection {
+			user     = "${var.admin_user}"
+			password = "${var.admin_password}"
+		}
+		inline = [
+	      "sudo yum update -y && yum install -y docker nano wget git",
+	      "sudo systemctl enable docker && systemctl start docker",
+	      "sudo docker pull skostiuk/apache-php:5.0",
+	      "sudo docker run -d -p 8080:80 skostiuk/apache-php:5.0"
+		]
+	}
+		tags = "${var.tags}"
+	}
+	
+	/*
+	provisioner "remote-exec" {
+		connection {
+			#host 		= "${azurerm_public_ip.demo02group.fqdn}"
+			host 		= "${azurerm_public_ip.demo02group.ip_address}"
+			#host 		= "40.121.69.188"
+			#host 		= "${azurerm_public_ip.demo02group.ip_address}"
+			#host 		= "${azurerm_public_ip.demo02group.ip_address}"
+
+			user 		= "${var.admin_user}"
+			#password = "${var.admin_password}"
+			type 		= "ssh"
+			private_key = "${file("~/.ssh/id_rsa")}"
+			timeout 	= "1m"
+			agent 		= true
+		}
+
+		inline = [
+			"sudo yum update -y && yum install -y docker nano wget git",
+			"sudo systemctl enable docker && systemctl start docker",
+			"sudo docker pull skostiuk/apache-php:5.0",
+			"sudo docker run -d -p 8080:80 skostiuk/apache-php:5.0"
+		]
+	}
+		tags = "${var.tags}"
+	} */
 
 	#-------------------Create Storage BLOB--------------------------------
 	# Create storage account for boot diagnostics
@@ -281,16 +299,14 @@
 	}
 
 	#-------------------RUN SCRIPT--------------------------------
-
+	/*
 	resource "azurerm_virtual_machine_extension" "helloterraformvm" {
 		name                 = "${var.dns_name}-hostname"
 		location             = "${var.location}"
-		#resource_group_name  = "${azurerm_resource_group.demo02group.name}"
-		resource_group_name  = "test-res-group-terraform"
-		virtual_machine_name = "myVM-test-nginx"
-		#virtual_machine_name = "${azurerm_virtual_machine_scale_set.demo02group.name}"
-		#publisher            = "Microsoft.OSTCExtensions"
-		#type                 = "CustomScriptForLinux"
+		resource_group_name  = "${azurerm_resource_group.demo02group.name}"
+		virtual_machine_name = "${azurerm_public_ip.demo02group.ip_address}"
+		#resource_group_name  = "test-res-group-terraform"
+		#virtual_machine_name = "myVM-test-nginx"
 		publisher            = "Microsoft.Azure.Extensions"
 		type                 = "CustomScript"
 		type_handler_version = "2.0"
@@ -302,6 +318,25 @@
 			}
 		SETTINGS
 	}
+	*/
+	
+	/*
+	resource "azurerm_virtual_machine_extension" "helloterraformvm002" {
+		name                 = "${var.dns_name}-hostname"
+		location             = "${var.location}"
+		#resource_group_name  = "${azurerm_resource_group.demo02group.name}"
+		resource_group_name  = "test-res-group-terraform"
+		virtual_machine_name = "myVM-test-nginx"
+		#virtual_machine_name = "${azurerm_virtual_machine_scale_set.demo02group.name}"
+		publisher            = "Microsoft.OSTCExtensions"
+		type                 = "CustomScriptForLinux"
+		type_handler_version = "1.5"
+		#tags				 = "${var.tags}"
 
-
-
+		settings = <<SETTINGS
+			{
+				"commandToExecute": "yum update -y && yum install -y docker nano wget git"
+			}
+		SETTINGS
+	}
+	*/
