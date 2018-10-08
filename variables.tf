@@ -32,6 +32,11 @@
 		default     = 80
 	}
 
+	variable "blob_uri" {
+		description = "The image URI"
+		default = "https://diagaac94722cd21774f.blob.core.windows.net/system/Microsoft.Compute/Images/images/packertestimage-osDisk.31b1ee61-ac26-4bc3-86b9-7ef2f23e4e52.vhd"
+	}
+
 		/* variable "resource_group_name" {
 	description = "The name of the resource group in which the resources will be created"
 	default     = "demo02group"
