@@ -1,25 +1,25 @@
 {
   "builders": [
     {
-      "type": "azure-arm",
-      "client_id": "82e157fc-15d1-4825-857a-b991b683b273",
-      "client_secret": "4400lviv",
-      "tenant_id": "e241b4a0-b3ae-4690-8721-5601a0c8314b",
-      "subscription_id": "97177a02-71fc-42bc-8a83-1a00bd462bf2",
-      "resource_group_name": "test-res-group-terraform",
-      "storage_account": "diagaac94722cd21774f",
-      "capture_container_name": "images",
-      "capture_name_prefix": "packertestimage",
-      "os_type": "Linux",
-      "image_publisher": "OpenLogic",
-      "image_offer": "CentOS",
-      "image_sku": "7.0",
-      "ssh_pty" : "true",
       "azure_tags": {
         "dept": "Engineering",
         "task": "Image deployment"
       },
+      "capture_container_name": "images",
+      "capture_name_prefix": "packertestimage",
+      "client_id": "REPLACE-WITH-YOUR-CLIENT-ID",
+      "client_secret": "REPLACE-WITH-YOUR-CLIENT-SECRET",
+      "subscription_id": "REPLACE-WITH-YOUR-SUBSCRIPTION-ID",
+      "tenant_id": "REPLACE-WITH-YOUR-TENANT-ID",
+      "image_offer": "CentOS",
+      "image_publisher": "OpenLogic",
+      "image_sku": "7.0",
       "location": "East US",
+      "os_type": "Linux",
+      "resource_group_name": "test-res-group-terraform",
+      "ssh_pty": "true",
+      "storage_account": "diagaac94722cd21774f",
+      "type": "azure-arm",
       "vm_size": "Standard_B1ms"
     }
   ],
@@ -44,8 +44,8 @@
         "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
       ],
       "inline_shebang": "/bin/sh -x",
-      "type": "shell",
-      "skip_clean": true
+      "skip_clean": true,
+      "type": "shell"
     }
   ]
 }

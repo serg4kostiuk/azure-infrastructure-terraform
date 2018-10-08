@@ -4,3 +4,6 @@ terraform.tfstate.backup
 .terraform.tfstate.lock.info
 .terraform/
 support.txt
+vhd.json
+vhd-vault.json
+image.json

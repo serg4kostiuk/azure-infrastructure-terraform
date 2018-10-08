@@ -193,6 +193,17 @@
 				key_data = "${file("~/.ssh/id_rsa.pub")}"
 			}
 		}
+		provisioner "remote-exec" {
+			connection {
+				user     = "${var.admin_user}"
+				password = "${var.admin_password}"
+			}
+
+			inline = [
+				"ls -la",
+				"ps -aux"
+			]
+		}
 	}
 	/*		
 	provisioner "remote-exec" {
