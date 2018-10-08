@@ -2,10 +2,10 @@
   "builders": [
     {
       "type": "azure-arm",
-      "client_id": "82e157fc-15d1-4825-857a-b991b683b273",
-      "client_secret": "4400lviv",
-      "tenant_id": "e241b4a0-b3ae-4690-8721-5601a0c8314b",
-      "subscription_id": "97177a02-71fc-42bc-8a83-1a00bd462bf2",
+      "client_id": "REPLACE-WITH-YOUR-CLIENT-ID",
+      "client_secret": "REPLACE-WITH-YOUR-CLIENT-SECRET",
+      "tenant_id": "REPLACE-WITH-YOUR-TENANT-ID",
+      "subscription_id": "REPLACE-WITH-YOUR-SUBSCRIPTION-ID",
       "resource_group_name": "test-res-group-terraform",
       "storage_account": "diagaac94722cd21774f",
       "capture_container_name": "images",
