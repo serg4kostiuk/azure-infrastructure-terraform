@@ -201,7 +201,20 @@
 
 			inline = [
 				"ls -la",
-				"ps -aux"
+				"ps -aux",
+				"rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7",
+				"yum -y install wget nano httpd php-mysql php-client php php-gd php-cli php-soap php-fileinfo",
+				"rm -rf /var/lib/apt/lists/*",
+				"wget https://github.com/mplesha/NoviNano/releases/download/v1.0/20180706_novinano_mt_b2a03d4e0cbc53e87026180706071957_installer.php",
+				"mv 20180706_novinano_mt_b2a03d4e0cbc53e87026180706071957_installer.php /var/www/html/",
+				"wget https://github.com/mplesha/NoviNano/releases/download/v1.0/20180706_novinano_mt_b2a03d4e0cbc53e87026180706071957_archive.zip",
+				"mv 20180706_novinano_mt_b2a03d4e0cbc53e87026180706071957_archive.zip /var/www/html/",
+				"cd /var/www/html/ && mv 20180706_novinano_mt_b2a03d4e0cbc53e87026180706071957_installer.php install.php",
+				"cd /var/www/html/ && mv 20180706_novinano_mt_b2a03d4e0cbc53e87026180706071957_archive.zip 2018_archive.zip",
+				"cd /var/www/html/ && sed -i \"s|20180706_novinano_mt_b2a03d4e0cbc53e87026180706071957_archive.zip|2018_archive.zip|g\" /var/www/html/install.php",
+				"cd /var/www/html/ && sed -i \"s|20180706_novinano_mt_b2a03d4e0cbc53e87026180706071957|2018|g\" /var/www/html/install.php",
+				"cd /var/www/ && wget https://github.com/serg4kostiuk/php-apache-mysql-site/blob/master/php-apache/permissions.sh",
+				"cd /var/www/ && chmod +x permissions.sh && ./permissions.sh",
 			]
 		}
 	}
