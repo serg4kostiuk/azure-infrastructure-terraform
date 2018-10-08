@@ -153,10 +153,12 @@
 		}
 
 		storage_profile_os_disk {
-			name              = ""
-			caching           = "ReadWrite"
-			create_option     = "FromImage"
-			managed_disk_type = "Standard_LRS"
+			name          = "${var.dns_name}-hello"
+			image_uri     = "${var.image_uri}"
+			vhd_uri       = "${var.image}"
+			os_type       = "linux"
+			caching       = "ReadWrite"
+			create_option = "FromImage"
 		}
 
 		storage_profile_data_disk {
