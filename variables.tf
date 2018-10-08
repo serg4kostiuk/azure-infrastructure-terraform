@@ -36,7 +36,7 @@
 		default = "https://diagaac94722cd21774f.blob.core.windows.net/system/Microsoft.Compute/Images/images/packertestimage-osDisk.31b1ee61-ac26-4bc3-86b9-7ef2f23e4e52.vhd"
 	}
 
-	variable "image_uri" {
+	variable "blob_uri" {
 		description = "The image URI"
 		default = "https://diagaac94722cd21774f.blob.core.windows.net/system/Microsoft.Compute/Images/images/packertestimage-osDisk.31b1ee61-ac26-4bc3-86b9-7ef2f23e4e52.vhd"
 	}
