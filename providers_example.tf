@@ -1,3 +1,4 @@
+	/*
 	variable "subscription_id" {
 		default = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 	}
@@ -13,3 +14,4 @@
 	variable "tenant_id" {
 		default = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 	}
+	*/

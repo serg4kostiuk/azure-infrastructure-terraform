@@ -1,0 +1,5 @@
+
+https://www.terraform.io/docs/providers/azurerm/r/mysql_database.html
+https://www.terraform.io/docs/providers/azurerm/r/sql_database.html
+
+https://github.com/terraform-providers/terraform-provider-azurerm/tree/master/examples/wordpress-mysql-replication

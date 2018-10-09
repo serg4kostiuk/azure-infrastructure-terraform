@@ -1,3 +1,5 @@
+providers.tf
 cred.tf
+support.txt
 terraform.tfstate
 terraform.tfstate.backup
