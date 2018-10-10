@@ -3,3 +3,10 @@ https://www.terraform.io/docs/providers/azurerm/r/mysql_database.html
 https://www.terraform.io/docs/providers/azurerm/r/sql_database.html
 
 https://github.com/terraform-providers/terraform-provider-azurerm/tree/master/examples/wordpress-mysql-replication
+
+
+#ping remote port
+nc -vz 13.68.128.183 50000
+wget 13.68.128.183:50000
+telnet 13.68.128.183 50000
+nping -p 50000 13.68.128.183

@@ -280,11 +280,11 @@ resource "azurerm_autoscale_setting" "test" {
                 metric_name = "Percentage CPU"
                 metric_resource_id = "${azurerm_virtual_machine_scale_set.demo02group.id}"
                 time_grain = "PT1M"
-                statistic = "Max"
+                statistic = "Average"
                 time_window = "PT5M"
                 time_aggregation = "Average"
                 operator = "GreaterThan"
-                threshold = 75
+                threshold = 50
             }
             
             scale_action {
@@ -300,7 +300,7 @@ resource "azurerm_autoscale_setting" "test" {
                 metric_name = "Percentage CPU"
                 metric_resource_id = "${azurerm_virtual_machine_scale_set.demo02group.id}"
                 time_grain = "PT1M"
-                statistic = "Min"
+                statistic = "Average"
                 time_window = "PT5M"
                 time_aggregation = "Average"
                 operator = "LessThan"
