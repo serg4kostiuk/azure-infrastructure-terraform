@@ -32,50 +32,7 @@ resource "azurerm_public_ip" "demo02group" {
     tags = "${var.tags}"
 }
 
-# **********************  NETWORK INTERFACES **********************
-resource "azurerm_network_security_group" "demo02group" {
-    name = "${var.dns_name}-NetworkSecurityGroup"
-    location = "${var.location}"
-    resource_group_name = "${azurerm_resource_group.demo02group.name}"
-    tags = "${var.tags}"
-    
-    security_rule {
-        name = "${var.dns_name}SSH"
-        priority = 100
-        direction = "Inbound"
-        access = "Allow"
-        protocol = "Tcp"
-        source_port_range = "*"
-        destination_port_range = "22"
-        source_address_prefix = "*"
-        destination_address_prefix = "*"
-    }
-    security_rule {
-        name = "${var.dns_name}HTTP"
-        priority = 1001
-        direction = "Inbound"
-        access = "Allow"
-        protocol = "Tcp"
-        source_port_range = "*"
-        destination_port_range = "80"
-        source_address_prefix = "*"
-        destination_address_prefix = "*"
-    }
-    security_rule {
-        name = "${var.dns_name}MySQL"
-        description = "MySQL"
-        priority = 110
-        direction = "Inbound"
-        access = "Allow"
-        protocol = "Tcp"
-        source_port_range = "*"
-        destination_port_range = "3306"
-        source_address_prefix = "*"
-        destination_address_prefix = "*"
-    }
-}
-
-#---------------------------Create Load Balancer-----------------------------
+# ********************** CREATE LOAD BALANCER **********************
 resource "azurerm_lb" "demo02group" {
     name = "${var.dns_name}-lb"
     location = "${var.location}"
@@ -125,7 +82,7 @@ resource "azurerm_lb_rule" "lbnatrule" {
     probe_id = "${azurerm_lb_probe.demo02group.id}"
 }
 
-#-------------------Create Scale set--------------------------------
+# ********************** CREATE SCALE SET **********************
 resource "azurerm_virtual_machine_scale_set" "demo02group" {
     name = "demo02group"
     location = "${var.location}"
@@ -192,74 +149,7 @@ resource "azurerm_virtual_machine_scale_set" "demo02group" {
     tags = "${var.tags}"
 }
 
-#-------------------Create Storage BLOB--------------------------------
-# Create storage account for boot diagnostics
-resource "azurerm_storage_account" "storageaccount" {
-    name = "diag${random_string.fqdn.result}"
-    resource_group_name = "${azurerm_resource_group.demo02group.name}"
-    location = "${var.location}"
-    account_tier = "Standard"
-    account_replication_type = "LRS"
-    tags = "${var.tags}"
-}
-
-resource "azurerm_storage_container" "demo02group" {
-    name = "demo02groupstor"
-    resource_group_name = "${azurerm_resource_group.demo02group.name}"
-    storage_account_name = "${azurerm_storage_account.storageaccount.name}"
-    container_access_type = "private"
-}
-
-resource "azurerm_storage_blob" "demo02group" {
-    name = "sample.vhd"
-    resource_group_name = "${azurerm_resource_group.demo02group.name}"
-    storage_account_name = "${azurerm_storage_account.storageaccount.name}"
-    storage_container_name = "${azurerm_storage_container.demo02group.name}"
-    type = "page"
-    size = "5120"
-}
-
-# -------------- Create Mysql database ----------------------------
-resource "azurerm_mysql_server" "demo02group" {
-    name = "${var.dns_name}-wordpressdatabase"
-    location = "${var.location}"
-    resource_group_name = "${azurerm_resource_group.demo02group.name}"
-    administrator_login = "serg"
-    administrator_login_password = "4400MYsql!"
-    version = "5.7"
-    ssl_enforcement = "Disabled"
-    
-    sku {
-        name = "B_Gen5_1"
-        capacity = 1
-        tier = "Basic"
-        family = "Gen5"
-    }
-    
-    storage_profile {
-        storage_mb = 5120
-        backup_retention_days = 10
-        geo_redundant_backup = "Disabled"
-    }
-}
-
-resource "azurerm_mysql_database" "demo02group" {
-    name = "testdatabase"
-    resource_group_name = "${azurerm_resource_group.demo02group.name}"
-    server_name = "${azurerm_mysql_server.demo02group.name}"
-    charset = "utf8"
-    collation = "utf8_unicode_ci"
-}
-
-resource "azurerm_mysql_firewall_rule" "demo02group" {
-    name = "${var.dns_name}-firewall-mysql-rule"
-    resource_group_name = "${azurerm_resource_group.demo02group.name}"
-    server_name = "${azurerm_mysql_server.demo02group.name}"
-    start_ip_address = "0.0.0.0"
-    end_ip_address = "255.255.255.254"
-}
-
-#-------------------Create Scale set--------------------------------
+# ********************** AUTOSCALE SETTING **********************
 resource "azurerm_autoscale_setting" "test" {
     name = "${var.dns_name}-scale-settings"
     resource_group_name = "${azurerm_resource_group.demo02group.name}"
