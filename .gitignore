@@ -1,9 +1,9 @@
 
-.idea/*
 providers.tf
 cred.tf
 support.txt
 terraform.tfstate
 terraform.tfstate.backup
 .terraform.tfstate.lock.info
+.idea/*
 .terraform/*
